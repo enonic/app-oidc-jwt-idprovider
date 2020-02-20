@@ -6,8 +6,6 @@ import java.util.Map;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JwtHandler
@@ -28,7 +26,7 @@ public class JwtHandler
         {
             decodedJwt = JWT.decode( jwt );
         }
-        catch ( JWTDecodeException e )
+        catch ( Exception e )
         {
             return handleFailure( null, 401, "Invalid JWT token format" );
         }
@@ -50,7 +48,7 @@ public class JwtHandler
                 build().
                 verify( decodedJwt );
         }
-        catch ( JWTVerificationException e )
+        catch ( Exception e )
         {
             return handleFailure( decodedJwt, 401, e.getMessage() );
         }
