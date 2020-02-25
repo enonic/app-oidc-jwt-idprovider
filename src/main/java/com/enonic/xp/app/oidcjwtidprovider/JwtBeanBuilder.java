@@ -7,7 +7,6 @@ import com.google.common.cache.CacheBuilder;
 
 public class JwtBeanBuilder
 {
-
     private static Cache<String, JwtBean> jwtHandlerCache = CacheBuilder.newBuilder().build();
 
     private String wellKnownEndpoint;

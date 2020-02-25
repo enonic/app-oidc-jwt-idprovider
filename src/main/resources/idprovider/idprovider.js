@@ -1,4 +1,5 @@
 const authLib = require('/lib/xp/auth');
+
 const jwt = require('/lib/jwt');
 const context = require('/lib/context');
 const user = require('/lib/user');
@@ -9,59 +10,51 @@ function getJwtHandler() {
     });
 }
 
-function handleToken(req) {
-    var token = jwt.extractToken(req);
-    if (!token) {
-        return null;
+exports.autoLogin = function (req) {
+    log.debug("JWT autologin");
+    const token = getJwtHandler().validate(jwt.extractToken(req));
+
+    let principalKey;
+    if (token.valid) {
+        log.debug("JWT token valid, getting user");
+        principalKey = user.getOrCreateUser({
+            idProviderConfig: authLib.getIdProviderConfig(),
+            payload: token.payload
+        });
+    } else {
+        log.debug("JWT token invalid: " + token.message);
     }
-    return getJwtHandler().validate(token);
-}
+
+    log.debug("Setting context for request");
+    context.getContextHandler({
+        "principalKey": principalKey,
+        "jwt": token,
+    }).setContext();
+};
 
 exports.handle401 = function (req) {
-    const tokenResult = handleToken(req);
-    if (!tokenResult) {
-        // Could not get token
+    log.debug("Handling 401");
+    let jwt = context.getContextHandler().getJwt();
+    if (!jwt.valid) {
+        log.debug("JWT token not valid, returning 401");
         return {
             "status": 401,
             "contentType": "application/json",
             "body": {
-                "code": 401,
-                "message": "Missing JWT access token"
-            }
-        };
-    } else if (tokenResult.valid) {
-        // Token is valid but this user cannot access this resource
-        return {
-            "status": 401,
-            "contentType": "application/json",
-            "body": {
-                "code": 401,
-                "message": "You are not allowed to access this resource"
+                "message": jwt.message,
+                "status": 401
             }
         };
     } else {
-        // Token verification failed
+        log.debug("JWT token valid, returning 403");
         return {
-            "status": tokenResult.code,
+            "status": 403,
             "contentType": "application/json",
             "body": {
-                "code": tokenResult.code,
-                "message": tokenResult.message
+                "message": "You don't have permission to access this resource",
+                "status": 403
             }
         };
     }
 };
 
-exports.autoLogin = function (req) {
-    var tokenResult = handleToken(req);
-
-    if (!tokenResult || !tokenResult.valid) {
-        // Token is not valid
-        return;
-    }
-
-    // Get user and set context
-    context.getContextHandler({
-        "principalKey": user.getOrCreateUser(authLib.getIdProviderConfig(), tokenResult).key
-    }).setContext();
-};
