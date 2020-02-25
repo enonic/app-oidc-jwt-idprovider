@@ -19,5 +19,11 @@
       <default>name</default>
       <occurrences minimum="1" maximum="1"/>
     </input>
+    <input name="userEmail_claim" type="TextLine">
+      <label>User email claim</label>
+      <help-text></help-text>
+      <default>email</default>
+      <occurrences minimum="1" maximum="1"/>
+    </input>
   </form>
 </id-provider>

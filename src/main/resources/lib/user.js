@@ -29,6 +29,10 @@ function runAsSu(callback) {
     }, callback);
 }
 
+function sanitizeUserName(userName) {
+    return userName.replace(/[|\\\/\?\*]/gi, '_');
+}
+
 /**
  * This function get or creates user based on JWT token payload
  *
@@ -42,7 +46,7 @@ exports.getOrCreateUser = function (params) {
     const idProviderConfig = required(params, "idProviderConfig")
     const payload = required(params, "payload")
 
-    const userId = payload[idProviderConfig.userName_claim];
+    const userId = sanitizeUserName(required(payload, idProviderConfig.userName_claim));
 
     return runAsSu(function () {
 
@@ -54,13 +58,15 @@ exports.getOrCreateUser = function (params) {
             return user.key;
         }
 
-        const displayName = payload[idProviderConfig.userDisplayName_claim]
+        const displayName = payload[idProviderConfig.userDisplayName_claim];
+        const email = payload[idProviderConfig.userEmail_claim];
 
         log.debug("User '%s' not found creating...", userId);
         return authLib.createUser({
             idProvider: portalLib.getIdProviderKey(),
             name: userId,
-            displayName: displayName
+            displayName: displayName,
+            email: email
         }).key;
     });
 };
