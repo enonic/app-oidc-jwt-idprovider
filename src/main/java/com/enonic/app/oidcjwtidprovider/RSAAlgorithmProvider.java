@@ -1,4 +1,4 @@
-package com.enonic.xp.app.oidcjwtidprovider;
+package com.enonic.app.oidcjwtidprovider;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;

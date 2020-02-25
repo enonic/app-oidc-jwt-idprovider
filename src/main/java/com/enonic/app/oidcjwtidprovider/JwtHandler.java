@@ -1,4 +1,4 @@
-package com.enonic.xp.app.oidcjwtidprovider;
+package com.enonic.app.oidcjwtidprovider;
 
 import java.io.IOException;
 import java.util.Base64;

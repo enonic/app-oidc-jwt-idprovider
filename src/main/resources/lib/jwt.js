@@ -30,10 +30,8 @@ exports.extractToken = function (req) {
         log.debug("'Authorization' header found");
 
         if (authHeader.startsWith("Bearer ")) {
-            log.debug("'Authorization' header starts with 'Bearer'");
-            const res = authHeader.replace("Bearer ", "");
-            log.debug("Extraxted token: " + res);
-            return res;
+            log.debug("'Authorization' header starts with 'Bearer', extracting token");
+            return authHeader.replace("Bearer ", "");
         } else {
             log.debug("'Authorization' header does not start with 'Bearer'");
         }
@@ -76,7 +74,7 @@ JWTHandler.prototype.wellKnown = function () {
  * @returns {object} JWT Handler
  */
 exports.getJwtHandler = function (params) {
-    var builder = __.newBean('com.enonic.xp.app.oidcjwtidprovider.JwtBeanBuilder');
+    var builder = __.newBean('com.enonic.app.oidcjwtidprovider.JwtBeanBuilder');
 
     builder.wellKnownEndpoint = required(params, "wellKnownEndpoint");
 

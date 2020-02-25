@@ -37,7 +37,7 @@ ContextHandler.prototype.getJwt = function () {
  * @returns {object} Context handler
  */
 exports.getContextHandler = function (options) {
-    let builder = __.newBean('com.enonic.xp.app.oidcjwtidprovider.ContextBeanBuilder');
+    let builder = __.newBean('com.enonic.app.oidcjwtidprovider.ContextBeanBuilder');
 
     if (options) {
         if (options.principalKey) {

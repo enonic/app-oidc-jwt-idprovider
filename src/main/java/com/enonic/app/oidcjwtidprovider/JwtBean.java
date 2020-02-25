@@ -1,4 +1,4 @@
-package com.enonic.xp.app.oidcjwtidprovider;
+package com.enonic.app.oidcjwtidprovider;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +29,7 @@ public class JwtBean
     public JwtBean( final String wellKnownEndpoint )
         throws IOException
     {
-        log.debug( "Initializing OIDC provider: " + wellKnownEndpoint );
+        log.debug( "Initializing OIDC provider" );
         this.wellKnown = getWellKnownEndpoint( wellKnownEndpoint );
         this.jwtHandler = new JwtHandler( new RSAAlgorithmProvider(
             new GuavaCachedJwkProvider( new UrlJwkProvider( new URL( (String) wellKnown.get( "jwks_uri" ) ) ) ) ) );

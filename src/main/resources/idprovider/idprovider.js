@@ -25,7 +25,7 @@ exports.autoLogin = function (req) {
         log.debug("JWT token invalid: " + token.message);
     }
 
-    log.debug("Setting context for request");
+    log.debug("Setting context for request with principalKey: " + principalKey);
     context.getContextHandler({
         "principalKey": principalKey,
         "jwt": token,
@@ -33,28 +33,15 @@ exports.autoLogin = function (req) {
 };
 
 exports.handle401 = function (req) {
-    log.debug("Handling 401");
     let jwt = context.getContextHandler().getJwt();
-    if (!jwt.valid) {
-        log.debug("JWT token not valid, returning 401");
-        return {
-            "status": 401,
-            "contentType": "application/json",
-            "body": {
-                "message": jwt.message,
-                "status": 401
-            }
-        };
-    } else {
-        log.debug("JWT token valid, returning 403");
-        return {
-            "status": 403,
-            "contentType": "application/json",
-            "body": {
-                "message": "You don't have permission to access this resource",
-                "status": 403
-            }
-        };
-    }
+    log.debug("Returning 401: " + jwt.message);
+    return {
+        "status": 401,
+        "contentType": "application/json",
+        "body": {
+            "message": jwt.message,
+            "status": 401
+        }
+    };
 };
 
