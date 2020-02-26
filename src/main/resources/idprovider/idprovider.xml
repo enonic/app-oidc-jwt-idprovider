@@ -1,29 +1,52 @@
 <id-provider>
   <mode>MIXED</mode>
   <form>
-    <input name="well_known_endpoint" type="TextLine">
-      <label>OIDC provider well-known endpoint</label>
-      <help-text></help-text>
-      <default>https://accounts.google.com/.well-known/openid-configuration</default>
-      <occurrences minimum="1" maximum="1"/>
-    </input>
-    <input name="userName_claim" type="TextLine">
-      <label>Username claim</label>
-      <help-text></help-text>
-      <default>sub</default>
-      <occurrences minimum="1" maximum="1"/>
-    </input>
-    <input name="userDisplayName_claim" type="TextLine">
-      <label>User display name claim</label>
-      <help-text></help-text>
-      <default>name</default>
-      <occurrences minimum="1" maximum="1"/>
-    </input>
-    <input name="userEmail_claim" type="TextLine">
-      <label>User email claim</label>
-      <help-text></help-text>
-      <default>email</default>
-      <occurrences minimum="1" maximum="1"/>
-    </input>
+    <field-set>
+      <label>OIDC provider</label>
+      <items>
+        <input name="oidc_well_known_endpoint" type="TextLine">
+          <label>Well-known endpoint</label>
+          <help-text>This should be the well-known endpoint of the OIDC provider that returns a json with information about the provider.
+          </help-text>
+          <default>https://accounts.google.com/.well-known/openid-configuration</default>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+      </items>
+    </field-set>
+    <field-set>
+      <label>Token validation</label>
+      <items>
+        <input name="validation_allowed_subjects" type="TextLine">
+          <label>Allowed clients (audience)</label>
+          <help-text>This is to restrict what clients are allowed to call services with this ID provider. Leave empty to allow all
+            clients.
+          </help-text>
+          <occurrences minimum="0" maximum="0"/>
+        </input>
+      </items>
+    </field-set>
+    <field-set>
+      <label>Claim mapping</label>
+      <items>
+        <input name="claim_username" type="TextLine">
+          <label>Username claim</label>
+          <help-text>When creating users, what claim should be used for the username.</help-text>
+          <default>sub</default>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+        <input name="claim_displayname" type="TextLine">
+          <label>User display name claim</label>
+          <help-text>When creating users, what claim should be used for the users display name.</help-text>
+          <default>name</default>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+        <input name="claim_email" type="TextLine">
+          <label>User email claim</label>
+          <help-text>When creating users, what claim should be used for the users email.</help-text>
+          <default>email</default>
+          <occurrences minimum="1" maximum="1"/>
+        </input>
+      </items>
+    </field-set>
   </form>
 </id-provider>

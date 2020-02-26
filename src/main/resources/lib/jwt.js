@@ -52,8 +52,14 @@ function JWTHandler(native) {
  *
  * @returns {object} Result of JWT validation
  */
-JWTHandler.prototype.validate = function (jwt) {
-    return this.bean.getJwtHandler().validate(jwt);
+JWTHandler.prototype.validate = function (jwt, allowedAudence) {
+    let aud = allowedAudence;
+    if (!aud) {
+        aud = [];
+    } else if (!Array.isArray(aud)) {
+        aud = [aud];
+    }
+    return this.bean.getJwtHandler().validate(jwt, aud);
 };
 
 /**

@@ -3,7 +3,10 @@ package com.enonic.app.oidcjwtidprovider;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +31,10 @@ public class JwtHandler
         this.rsaAlgorithmProvider = rsaAlgorithmProvider;
     }
 
-    public Map<String, Object> validate( final String jwt )
+    public Map<String, Object> validate( final String jwt, final List<String> allowedAudience )
     {
         log.debug( "Validating token: " + jwt );
+        log.debug( "Allowed audience: " + allowedAudience );
         if ( jwt == null )
         {
             return handleFailure( null, 401, "Missing JWT access token" );
@@ -44,6 +48,22 @@ public class JwtHandler
         catch ( Exception e )
         {
             return handleFailure( null, 401, "Invalid JWT token format" );
+        }
+
+        if ( allowedAudience.size() > 0 )
+        {
+            log.debug( "Checking token audience '" + decodedJwt.getAudience() + "' against allowed audience: " + allowedAudience );
+            boolean match = false;
+            if ( decodedJwt.getAudience() != null )
+            {
+                Set<String> intersection =
+                    decodedJwt.getAudience().stream().distinct().filter( allowedAudience::contains ).collect( Collectors.toSet() );
+                match = intersection.size() > 0;
+            }
+            if ( !match )
+            {
+                return handleFailure( decodedJwt, 401, "Token subject not allowed" );
+            }
         }
 
         Algorithm algorithm;

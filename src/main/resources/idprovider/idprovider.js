@@ -6,13 +6,17 @@ const user = require('/lib/user');
 
 function getJwtHandler() {
     return jwt.getJwtHandler({
-        wellKnownEndpoint: authLib.getIdProviderConfig().well_known_endpoint
+        wellKnownEndpoint: authLib.getIdProviderConfig().oidc_well_known_endpoint
     });
+}
+
+function allowedSubjects() {
+    return authLib.getIdProviderConfig().validation_allowed_subjects;
 }
 
 exports.autoLogin = function (req) {
     log.debug("JWT autologin");
-    const token = getJwtHandler().validate(jwt.extractToken(req));
+    const token = getJwtHandler().validate(jwt.extractToken(req), allowedSubjects());
 
     let principalKey;
     if (token.valid) {

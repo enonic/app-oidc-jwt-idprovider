@@ -46,7 +46,7 @@ exports.getOrCreateUser = function (params) {
     const idProviderConfig = required(params, "idProviderConfig")
     const payload = required(params, "payload")
 
-    const userId = sanitizeUserName(required(payload, idProviderConfig.userName_claim));
+    const userId = sanitizeUserName(required(payload, idProviderConfig.claim_username));
 
     return runAsSu(function () {
 
@@ -58,8 +58,8 @@ exports.getOrCreateUser = function (params) {
             return user.key;
         }
 
-        const displayName = payload[idProviderConfig.userDisplayName_claim];
-        const email = payload[idProviderConfig.userEmail_claim];
+        const displayName = payload[idProviderConfig.claim_displayname];
+        const email = payload[idProviderConfig.claim_email];
 
         log.debug("User '%s' not found creating...", userId);
         return authLib.createUser({
