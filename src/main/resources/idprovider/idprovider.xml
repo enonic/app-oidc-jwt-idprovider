@@ -29,20 +29,20 @@
       <label>Claim mapping</label>
       <items>
         <input name="claim_username" type="TextLine">
-          <label>Username claim</label>
-          <help-text>When creating users, what claim should be used for the username.</help-text>
-          <default>sub</default>
+          <label>Username claim (Primary)</label>
+          <help-text>When creating users, what claim should be used for the username. If the claim is not found the IdProvider will use the sub claim.</help-text>
+          <default>email</default>
           <occurrences minimum="1" maximum="1"/>
         </input>
         <input name="claim_displayname" type="TextLine">
           <label>User display name claim</label>
-          <help-text>When creating users, what claim should be used for the users display name.</help-text>
+          <help-text>When creating users, what claim should be used for the users display name. If the claim is not found the IdProvider will use the sub claim.</help-text>
           <default>name</default>
           <occurrences minimum="1" maximum="1"/>
         </input>
         <input name="claim_email" type="TextLine">
           <label>User email claim</label>
-          <help-text>When creating users, what claim should be used for the users email.</help-text>
+          <help-text>When creating users, what claim should be used for the users email. If the claim is not found the IdProvider will use the 'sub claim'@serviceaccount.enonic.</help-text>
           <default>email</default>
           <occurrences minimum="1" maximum="1"/>
         </input>

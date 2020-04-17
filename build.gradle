@@ -7,7 +7,7 @@ app {
     displayName = "${appDisplayName}"
     vendorName = "${vendorName}"
     vendorUrl = "${vendorUrl}"
-    systemVersion = "${xpVersion}"
+    systemVersion = "7.3.0" // TODO: FIX
 }
 
 dependencies {
