@@ -1,3 +1,30 @@
 = Open ID Connect JWT ID Provider
 
 Authenticate your users with JWT tokens issued by a OIDC provider.
+This ID provider calls the well-know endpoint of a OIDC provider to fetch public keys. Those keys are then used to validate signatures of JWT tokens.
+It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
+
+== Compatibility
+
+[cols="1,1,3", options="header"]
+|===
+|Version
+|XP Version
+|Download
+
+|1.0.0
+|>= 7.3.0
+|Not Available
+
+|===
+
+== Build
+
+To build this project, execute the following:
+
+[source,bash]
+----
+./gradlew clean build
+----
+
+== link:docs/index.adoc[Documentation]
