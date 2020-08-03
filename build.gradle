@@ -7,7 +7,7 @@ app {
     displayName = "${appDisplayName}"
     vendorName = "${vendorName}"
     vendorUrl = "${vendorUrl}"
-    systemVersion = "7.3.0" // TODO: FIX
+    systemVersion = "${xpVersion}"
 }
 
 dependencies {
@@ -16,6 +16,7 @@ dependencies {
     include "com.enonic.xp:lib-auth:${xpVersion}"
     include "com.enonic.xp:lib-context:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
+
     include "com.enonic.lib:lib-http-client:2.0.0"
     include "com.fasterxml.jackson.core:jackson-databind:2.11.1"
     include 'com.auth0:java-jwt:3.10.3'

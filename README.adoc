@@ -1,8 +1,8 @@
 = Open ID Connect JWT ID Provider
 
 Authenticate your users with JWT tokens issued by a OIDC provider.
-This ID provider calls the well-know endpoint of a OIDC provider to fetch public keys. Those keys are then used to validate signatures of JWT tokens.
-It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
+
+This ID provider validates signatures of JWT tokens passed as Bearer tokens in the Authorization header of requests. It does this by calling the well-know endpoint of a OIDC provider to fetch public keys and those keys are then used to validate. It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
 
 == Compatibility
 
