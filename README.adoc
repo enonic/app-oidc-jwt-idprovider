@@ -2,7 +2,14 @@
 
 Authenticate your users with JWT tokens issued by a OIDC provider.
 
-This ID provider validates signatures of JWT tokens passed as Bearer tokens in the Authorization header of requests. It does this by calling the well-know endpoint of a OIDC provider to fetch public keys and those keys are then used to validate. It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
+This ID provider validates signatures of JWT tokens passed in requests. It does this by calling the well-know endpoint of a OIDC provider to fetch public keys and those keys are then used to validate. It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
+
+== Passing tokens to the ID provider
+
+.You can pass tokens to this ID provider in the following way:
+* Setting the authorization header: `Authorization: Bearer <TOKEN>`
+* Setting a path parameter: `https://<HOST>/my/path?jwt=<TOKEN>`
+* Setting the Sec-WebSocket-Protocol header: `Sec-WebSocket-Protocol: <WS_PROTOCOL>, jwt, <TOKEN>`. This is useful for web sockets, i.e `new WebSocket('wss://<HOST>/my/path', [<WS_PROTOCOL>, 'jwt', <TOKEN>]`.
 
 == Compatibility
 

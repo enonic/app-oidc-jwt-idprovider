@@ -23,9 +23,8 @@ function required(params, name) {
  * @returns {string} JWT token
  */
 exports.extractToken = function (req) {
-    log.debug("Extracting 'Authorization' header");
     let authHeader = req.headers["Authorization"];
-
+    log.debug("Extracting 'Authorization' header: " + authHeader);
     if (authHeader) {
         log.debug("'Authorization' header found");
 
@@ -33,7 +32,25 @@ exports.extractToken = function (req) {
             log.debug("'Authorization' header starts with 'Bearer', extracting token");
             return authHeader.replace("Bearer ", "");
         } else {
-            log.debug("'Authorization' header does not start with 'Bearer'");
+            log.debug("'Authorization' header does not start with 'Bearer '");
+        }
+    }
+
+    let queryParam = req.params['jwt'];
+    log.debug("Extracting query param 'jwt': " + queryParam);
+    if (queryParam) {
+        log.debug("Query param 'jwt' found");
+        return queryParam;
+    }
+
+    let wsSecProtoHeader = req.headers["Sec-WebSocket-Protocol"];
+    log.debug("Extracting 'Sec-WebSocket-Protocol' header: " + wsSecProtoHeader);
+    if (wsSecProtoHeader) {
+        log.debug("'Sec-WebSocket-Protocol' header found");
+        let matches = wsSecProtoHeader.match(/jwt,\s\S+\.\S+\.\S+/g);
+        if (matches.length == 1) {
+            log.debug("'Sec-WebSocket-Protocol' header contains token");
+            return matches[0].replace("jwt, ", "");
         }
     }
 
