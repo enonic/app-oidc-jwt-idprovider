@@ -48,7 +48,7 @@ exports.extractToken = function (req) {
     if (wsSecProtoHeader) {
         log.debug("'Sec-WebSocket-Protocol' header found");
         let matches = wsSecProtoHeader.match(/jwt,\s\S+\.\S+\.\S+/g);
-        if (matches.length == 1) {
+        if (matches && matches.length == 1) {
             log.debug("'Sec-WebSocket-Protocol' header contains token");
             return matches[0].replace("jwt, ", "");
         }
