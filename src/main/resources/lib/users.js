@@ -68,27 +68,42 @@ exports.login = function (payload) {
 
     let user = runAsSu(function () {
         log.debug("Searching for user '%s'", userName);
-        const user = authLib.getPrincipal("user:" + portalLib.getIdProviderKey() + ":" + userName);
+        let user = authLib.getPrincipal("user:" + portalLib.getIdProviderKey() + ":" + userName);
 
         if (user) {
             log.debug("Found user '%s'", userName);
-            return user.login;
+        } else {
+            try {
+                log.debug("User '%s' not found creating...", userName);
+                user = authLib.createUser({
+                    idProvider: portalLib.getIdProviderKey(),
+                    name: userName,
+                    displayName: getDisplayName(idProviderConfig, payload),
+                    email: getEmail(idProviderConfig, payload)
+                });
+            } catch (err) {
+                const errAsString = "" + err;
+                log.debug("Error creating user '%s':", userName, errAsString)
+
+                if (errAsString.startsWith('com.enonic.xp.security.PrincipalAlreadyExistsException')) {
+                    // This happens because of a race condition, another process just created the user
+                    user = authLib.getPrincipal("user:" + portalLib.getIdProviderKey() + ":" + userName);
+                } else {
+                    log.warning("User '%s' could not be provided: %s", userName, errAsString);
+                }
+            }
         }
 
-        log.debug("User '%s' not found creating...", userName);
-        return authLib.createUser({
-            idProvider: portalLib.getIdProviderKey(),
-            name: userName,
-            displayName: getDisplayName(idProviderConfig, payload),
-            email: getEmail(idProviderConfig, payload)
-        }).login;
+        return user;
     });
 
-    log.debug("Logging in user '%s'", user);
-    authLib.login({
-        user: user,
-        idProvider: portalLib.getIdProviderKey(),
-        skipAuth: true,
-        scope: 'REQUEST'
-    });
+    if (user) {
+        log.debug("Logging in user '%s'", user.login);
+        authLib.login({
+            user: user.login,
+            idProvider: portalLib.getIdProviderKey(),
+            skipAuth: true,
+            scope: 'REQUEST'
+        });
+    }
 };
