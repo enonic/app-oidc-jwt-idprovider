@@ -31,8 +31,10 @@ public class JwtHandler
         this.rsaAlgorithmProvider = rsaAlgorithmProvider;
     }
 
-    public Map<String, Object> validate( final String jwt, final List<String> allowedAudience )
+    public Map<String, Object> validate( final String jwtOriginal, final List<String> allowedAudience )
     {
+        String jwt = removeUrlEncoding( jwtOriginal );
+
         log.debug( "Validating token: " + jwt );
         log.debug( "Allowed audience: " + allowedAudience );
         if ( jwt == null )
@@ -132,5 +134,29 @@ public class JwtHandler
         throws IOException
     {
         return mapper.readValue( decode.decode( base64Payload ), Map.class );
+    }
+
+    private String removeUrlEncoding( final String jwt )
+    {
+        // Switching char values 62 and 63 in the charset
+        // https://www.prostdev.com/post/understanding-the-illegal-base64-character-error-java-groovy-and-mule-4-dw-2-0
+        StringBuilder sb = new StringBuilder();
+        for ( int i = 0; i < jwt.length(); i++ )
+        {
+            char c = jwt.charAt( i );
+            if ( c == '-' )
+            {
+                sb.append( '+' );
+            }
+            else if ( c == '_' )
+            {
+                sb.append( '/' );
+            }
+            else
+            {
+                sb.append( c );
+            }
+        }
+        return sb.toString();
     }
 }
