@@ -4,6 +4,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.auth0.jwk.JwkException;
 import com.auth0.jwk.JwkProvider;
@@ -12,6 +14,8 @@ import com.auth0.jwt.interfaces.RSAKeyProvider;
 
 public class RSAAlgorithmProvider
 {
+    private final Logger log = LoggerFactory.getLogger( RSAAlgorithmProvider.class );
+
     private final RSAKeyProvider rsaKeyProvider;
 
     public RSAAlgorithmProvider( final JwkProvider jwkProvider )
@@ -54,7 +58,7 @@ public class RSAAlgorithmProvider
             }
             catch ( JwkException e )
             {
-                e.printStackTrace();
+                log.warn( "Unable to fetch JWT provider public key: " + e.getMessage() );
                 throw new RuntimeException( e.getMessage(), e );
             }
         }

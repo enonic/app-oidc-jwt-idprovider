@@ -2,20 +2,22 @@
 
 Authenticate your users with JWT tokens issued by a OIDC provider.
 
-This ID provider validates signatures of JWT tokens passed as Bearer tokens in the Authorization header of requests. It does this by calling the well-know endpoint of a OIDC provider to fetch public keys and those keys are then used to validate. It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
+This ID provider validates signatures of JWT tokens. It does this by calling the well-know endpoint of a OIDC provider to fetch public keys and those keys are then used to validate. It is compatible with all OIDC providers that provide a `jwks_uri` in their well-known configuration.
 
 == Configuration
 
 * In your Enonic XP admin interface
-** In the admin tool "Applications", install the application "Open ID Connect JWT ID Provider" .
+** In the admin tool "Applications", install the application "OIDC JWT ID Provider" .
 ** In the admin tool "Users", create a ID provider and configure it to use the Open ID Connect JWT ID Provider.
 *** Well-known endpoint: The URL to the well known endpoint of you OIDC provider
+*** Query parameter: Set query parameter the ID provider will try to fetch tokens from.
+*** Sec-WebSocket-Protocol: Check if you want the ID provider to look for the JWT token in the Sec-WebSocket-Protocol header.
 *** Allowed clients (audience): Optionally restrict allowed clients (audience claims).
 *** Username claim: What claim to use for user names.
 *** User display name claim: What claim to use for user display names.
 *** User email claim: What claim to use for user email.
-
-image::images/jwt01.png[Installation,768]
+*** Create new users: Set if you want the ID provider to create new users based on the JWT tokens.
+*** Create XP sessions: Set if you want the ID provider to create sessions in XP if a user is authenticated.
 
 * In your Enonic Virtual Hosting configuration, modify the appropriate mappings so that webapp uses the user store you created.
 

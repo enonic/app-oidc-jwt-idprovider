@@ -1,3 +1,5 @@
+const authLib = require('/lib/xp/auth');
+
 /**
  * Functions to handle validation of JWT tokens
  *
@@ -23,6 +25,8 @@ function required(params, name) {
  * @returns {string} JWT token
  */
 exports.extractToken = function (req) {
+    let idProviderConfig = authLib.getIdProviderConfig();
+
     let authHeader = req.headers["Authorization"];
     log.debug("Extracting 'Authorization' header: " + authHeader);
     if (authHeader) {
@@ -36,21 +40,26 @@ exports.extractToken = function (req) {
         }
     }
 
-    let queryParam = req.params['jwt'];
-    log.debug("Extracting query param 'jwt': " + queryParam);
-    if (queryParam) {
-        log.debug("Query param 'jwt' found");
-        return queryParam;
+    let queryParamName = idProviderConfig.retrieval_query_parameter;
+    if (queryParamName) {
+        let queryParam = req.params[queryParamName];
+        log.debug("Extracting query param '" + queryParamName + "': " + queryParam);
+        if (queryParam) {
+            log.debug("Query param '" + queryParamName + "' found");
+            return queryParam;
+        }
     }
 
-    let wsSecProtoHeader = req.headers["Sec-WebSocket-Protocol"];
-    log.debug("Extracting 'Sec-WebSocket-Protocol' header: " + wsSecProtoHeader);
-    if (wsSecProtoHeader) {
-        log.debug("'Sec-WebSocket-Protocol' header found");
-        let matches = wsSecProtoHeader.match(/jwt,\s\S+\.\S+\.\S+/g);
-        if (matches && matches.length == 1) {
-            log.debug("'Sec-WebSocket-Protocol' header contains token");
-            return matches[0].replace("jwt, ", "");
+    if (idProviderConfig.retrieval_ws_header) {
+        let wsSecProtoHeader = req.headers["Sec-WebSocket-Protocol"];
+        log.debug("Extracting 'Sec-WebSocket-Protocol' header: " + wsSecProtoHeader);
+        if (wsSecProtoHeader) {
+            log.debug("'Sec-WebSocket-Protocol' header found");
+            let matches = wsSecProtoHeader.match(/\S+\.\S+\.\S+/g);
+            if (matches && matches.length == 1) {
+                log.debug("'Sec-WebSocket-Protocol' header contains token");
+                return matches[0];
+            }
         }
     }
 

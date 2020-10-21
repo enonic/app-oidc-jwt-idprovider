@@ -72,7 +72,7 @@ exports.login = function (payload) {
 
         if (user) {
             log.debug("Found user '%s'", userName);
-        } else {
+        } else if (idProviderConfig.create_users) {
             try {
                 log.debug("User '%s' not found creating...", userName);
                 user = authLib.createUser({
@@ -97,13 +97,20 @@ exports.login = function (payload) {
         return user;
     });
 
+    let scope = 'REQUEST';
+    if (idProviderConfig.create_session) {
+        scope = 'SESSION';
+    }
+
     if (user) {
         log.debug("Logging in user '%s'", user.login);
         authLib.login({
             user: user.login,
             idProvider: portalLib.getIdProviderKey(),
             skipAuth: true,
-            scope: 'REQUEST'
+            scope: scope
         });
+    } else {
+        log.debug("User not found!");
     }
 };

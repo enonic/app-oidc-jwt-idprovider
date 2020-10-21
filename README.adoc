@@ -8,8 +8,8 @@ This ID provider validates signatures of JWT tokens passed in requests. It does 
 
 .You can pass tokens to this ID provider in the following way:
 * Setting the authorization header: `Authorization: Bearer <TOKEN>`
-* Setting a path parameter: `https://<HOST>/my/path?jwt=<TOKEN>`
-* Setting the Sec-WebSocket-Protocol header: `Sec-WebSocket-Protocol: <WS_PROTOCOL>, jwt, <TOKEN>`. This is useful for web sockets, i.e `new WebSocket('wss://<HOST>/my/path', [<WS_PROTOCOL>, 'jwt', <TOKEN>]`.
+* Setting a query parameter (if enabled): `https://<HOST>/my/path?jwt=<TOKEN>`
+* Setting the Sec-WebSocket-Protocol header (if enabled): `Sec-WebSocket-Protocol: <WS_PROTOCOL>, <TOKEN>`. This is useful for web sockets, i.e `new WebSocket('wss://<HOST>/my/path', [<WS_PROTOCOL>, <TOKEN>]`.
 
 == Compatibility
 
