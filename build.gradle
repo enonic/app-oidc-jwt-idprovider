@@ -19,7 +19,7 @@ dependencies {
 
     include "com.enonic.lib:lib-http-client:2.2.1"
     include "com.fasterxml.jackson.core:jackson-databind:2.12.2"
-    include 'com.auth0:java-jwt:3.14.0'
+    include 'com.auth0:java-jwt:3.15.0'
     include 'com.auth0:jwks-rsa:0.17.0'
 
     testCompile 'junit:junit:4.13.2'
