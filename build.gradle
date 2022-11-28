@@ -19,7 +19,7 @@ dependencies {
     include "com.enonic.xp:lib-context:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
 
-    include "com.fasterxml.jackson.core:jackson-databind:2.14.0"
+    include "com.fasterxml.jackson.core:jackson-databind:2.14.1"
     include 'com.auth0:java-jwt:4.2.1'
     include 'com.auth0:jwks-rsa:0.21.2'
 
