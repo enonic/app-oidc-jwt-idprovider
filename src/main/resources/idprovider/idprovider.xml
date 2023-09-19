@@ -24,7 +24,7 @@
         <input name="retrieval_ws_header" type="CheckBox">
           <label>Sec-WebSocket-Protocol header</label>
           <help-text>Look for a token in the Sec-WebSocket-Protocol header.</help-text>
-          <occurrences minimum="1" maximum="1"/>
+          <occurrences minimum="0" maximum="1"/>
           <default>unchecked</default>
         </input>
       </items>
@@ -76,13 +76,13 @@
         <input name="create_users" type="CheckBox">
           <label>Create new users</label>
           <help-text>Create users when an unknown user calls the ID provider.</help-text>
-          <occurrences minimum="1" maximum="1"/>
+          <occurrences minimum="0" maximum="1"/>
           <default>checked</default>
         </input>
         <input name="create_session" type="CheckBox">
           <label>Create XP sessions</label>
           <help-text>Create session in XP after token has been validated.</help-text>
-          <occurrences minimum="1" maximum="1"/>
+          <occurrences minimum="0" maximum="1"/>
           <default>unchecked</default>
         </input>
       </items>
