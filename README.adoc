@@ -1,3 +1,13 @@
+= Deprecation Announcement
+
+We would like to inform our users that the functionality provided by this Identity Provider has been fully integrated into version 3.0.0 of the https://github.com/enonic/app-oidc-idprovider[OIDC ID Provider]. This integration streamlines our services and enhances security and usability.
+
+What This Means for You:
+
+* *Upgrading:* We encourage users of the current IDP to transition to the OIDC ID Provider version 3.0.0. This upgrade ensures continued support and access to the latest features and security improvements.
+
+* *End of Support:* We no longer support this IDP. Users are urged to transition to the OIDC ID Provider version 3.0.0 to ensure continued service and access to the latest features and security improvements.
+
 = Open ID Connect JWT ID Provider
 
 Authenticate your users with JWT tokens issued by a OIDC provider.
